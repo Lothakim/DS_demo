@@ -10,7 +10,7 @@
 #define INFEASIBLE -1
 #define OVERFLOW -2
 typedef int Status;
-typedef int ElemType;
+typedef int ElemType; //ElemType可根据实际情况调整类型，如char, float等
 
 #define LIST_INIT_SIZE 100
 #define LISTINCREMENT 10
