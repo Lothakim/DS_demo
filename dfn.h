@@ -1,5 +1,5 @@
 //
-// Created by lotha on 2019/6/6.
+// Created by lothakim on 2019/6/6.
 //
 #include <stdlib.h>
 
@@ -66,4 +66,50 @@ Status ListDelete_Sq(SqList L, int i, ElemType e){
     --L.length;
 
     return OK;
+}
+
+//定位顺序存储结构线性表元素的操作
+int LocateElem_Sq(SqList L, ElemType e, Status (* compare)(ElemType, ElemType)){
+    int i=1;
+    ElemType *p=L.elem;
+    while(i<=L.length&&!(*compare)(*p++,e))
+        i++;
+    if (i<=L.length)
+        return i;
+    else
+        return 0;
+}
+
+//顺序表合并操作，已知原表按非递减次序排列
+void MergeList_Sq(SqList La, SqList Lb, SqList Lc){
+    ElemType *pa = La.elem;
+    ElemType *pb = Lb.elem;
+
+    Lc.length = La.length+Lb.length;
+    Lc.listsize = Lc.length;
+    Lc.elem = (ElemType *)malloc(Lc.listsize* sizeof(ElemType));
+    ElemType *pc = Lc.elem;
+    if(!Lc.elem)
+        exit(OVERFLOW);
+
+    ElemType *pa_last = La.elem+La.length-1;
+    ElemType *pb_last = Lb.elem+Lb.length-1;
+
+    while(pa<=pa_last&&pb<=pb_last){
+        if(*pa>=*pb){ //若pa指向的值大于等于pb，则取pb的值，并使pb指向下一位
+            *pc=*pb;
+            pb++;
+        }
+        else{ //反之，则取pa的值，并使pa指向下一位
+            *pc=*pa;
+            pa++;
+        }
+        pc++; //每个循环后，pc必定获得一个值，然后使其指向下一位
+    }
+
+    while(pa<=pa_last)
+        *pc++=*pa++;
+
+    while (pb<pb_last)
+        *pc++=*pb++;
 }
