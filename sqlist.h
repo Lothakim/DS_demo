@@ -1,7 +1,11 @@
-//
-// Created by lothakim on 2019/6/6.
-//
+//作者：罗通侯君
+//时间：2019年6月6日
+//内容基于《数据结构（C语言版）》（严蔚敏）
+
+//线性表的顺序存储结构实现及基本操作
+
 #include <stdlib.h>
+#include <stdio.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -22,6 +26,20 @@ typedef struct {
     int listsize;
 }SqList;
 
+Status InitList_Sq(SqList L);
+Status ListInsert_Sq(SqList L, int i, ElemType e);
+Status ListDelete_Sq(SqList L, int i, ElemType e);
+Status compare(ElemType, ElemType);
+int LocateElem_Sq(SqList L, ElemType e);
+void MergeList_Sq(SqList La, SqList Lb, SqList Lc);
+
+Status compare(ElemType a, ElemType b){
+    if (a == b)
+        return OK;
+    else
+        return ERROR;
+}
+
 //构造一个空的线性表L
 Status InitList_Sq(SqList L){
     L.elem=(ElemType *)malloc(LIST_INIT_SIZE* sizeof(ElemType));
@@ -34,20 +52,24 @@ Status InitList_Sq(SqList L){
 
 //顺序存储结构线性表的插入操作
 Status ListInsert_Sq(SqList L, int i, ElemType e){
+
+    //判断插入位置是否合法
     if (i<1||i>L.length+1)
         return ERROR;
+
     if(L.length>=L.listsize){
-        ElemType *newbase=(ElemType *)realloc(L.elem, (L.listsize+LISTINCREMENT)* sizeof(ElemType));
+        ElemType *newbase = (ElemType *)realloc(L.elem, (L.listsize+LISTINCREMENT)*sizeof(ElemType));
         if (!newbase)
             exit(OVERFLOW);
-        L.elem=newbase;
+        L.elem = newbase;
         L.listsize += LISTINCREMENT;
     }
-    ElemType *q= &(L.elem[i-1]); //q为指向插入位置的指针
+
+    ElemType *q = &(L.elem[i-1]); //q为指向插入位置的指针
     for (ElemType *p = &(L.elem[L.length-1]); p >= q; --p) { //初始化指针p，使其指向原表最后一位，并依次回退直到q
-        *(p+1)=*p; //将p指向的地址的值赋予其后一位
+        *(p+1) = *p; //将p指向的地址的值赋予其后一位
     }
-    *q=e;
+    *q = e;
     ++L.length;
 
     return OK;
@@ -55,11 +77,13 @@ Status ListInsert_Sq(SqList L, int i, ElemType e){
 
 //顺序存储结构线性表的删除操作
 Status ListDelete_Sq(SqList L, int i, ElemType e){
-    if (i<1||i>L.length+1)
+
+    if (i<1 || i>L.length+1)
         return ERROR;
+
     ElemType *p = &(L.elem[i-1]); //指针p指向即将被删除的元素的位置
     e = *p;
-    ElemType *q = L.elem+L.length-1; //指针q指向原表最后一位
+    ElemType *q = L.elem + L.length-1; //指针q指向原表最后一位
     for (; p < q; ++p) {
         *p=*(p+1); //从被删除的元素开始，将后一位的值赋予指向地址的值
     }
@@ -69,12 +93,12 @@ Status ListDelete_Sq(SqList L, int i, ElemType e){
 }
 
 //定位顺序存储结构线性表元素的操作
-int LocateElem_Sq(SqList L, ElemType e, Status (* compare)(ElemType, ElemType)){
+int LocateElem_Sq(SqList L, ElemType e){
     int i=1;
-    ElemType *p=L.elem;
-    while(i<=L.length&&!(*compare)(*p++,e))
+    ElemType *p = L.elem;
+    while(i<=L.length && !(compare)(*p++, e))
         i++;
-    if (i<=L.length)
+    if (i <= L.length)
         return i;
     else
         return 0;
@@ -82,18 +106,19 @@ int LocateElem_Sq(SqList L, ElemType e, Status (* compare)(ElemType, ElemType)){
 
 //顺序表合并操作，已知原表按非递减次序排列
 void MergeList_Sq(SqList La, SqList Lb, SqList Lc){
+
     ElemType *pa = La.elem;
     ElemType *pb = Lb.elem;
+    ElemType *pa_last = La.elem+La.length-1;
+    ElemType *pb_last = Lb.elem+Lb.length-1;
 
     Lc.length = La.length+Lb.length;
     Lc.listsize = Lc.length;
     Lc.elem = (ElemType *)malloc(Lc.listsize* sizeof(ElemType));
     ElemType *pc = Lc.elem;
+
     if(!Lc.elem)
         exit(OVERFLOW);
-
-    ElemType *pa_last = La.elem+La.length-1;
-    ElemType *pb_last = Lb.elem+Lb.length-1;
 
     while(pa<=pa_last&&pb<=pb_last){
         if(*pa>=*pb){ //若pa指向的值大于等于pb，则取pb的值，并使pb指向下一位
