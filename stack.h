@@ -20,7 +20,7 @@ typedef int SElemType; //ElemType可根据实际情况调整类型，如char, fl
 #define STACKINCREMENT 10
 
 //栈的定义
-typedef struct {
+typedef struct Sqstack{
     SElemType *base; //栈底指针
     SElemType *top;  //栈顶指针
     int stacksize;
@@ -71,4 +71,64 @@ Status Pop(Sqstack S, SElemType e){
 
     e = *(S.top-1);
     S.top--;
+}
+
+
+//清空栈内数据
+void ClearStack(Sqstack S){
+    if (S.top == S.base)
+        exit(ERROR);
+    else
+        S.top = S.base;
+    }
+
+//删除栈
+void DestroyStack(Sqstack S){
+    free(S.base);
+}
+
+//括号匹配检验
+void bracket_check(Sqstack S){
+    InitStack(S);
+    SElemType bracket, e;
+    bracket = getchar();
+    Push(S, bracket);
+    while (S.top != S.base)
+    {
+        bracket = getchar();
+        if (bracket == *(S.top-1))
+        {
+            Pop(S, e);
+        }
+        else
+        {
+            Push(S, bracket);
+        }
+    }
+}
+
+//行编辑程序
+void LineEdit(Sqstack S){
+    InitStack(S);
+    SElemType ch = getchar(), c;
+
+    while (ch != EOF)
+    {
+        while (ch != EOF && ch != '\n'){
+            switch (ch)
+            {
+            case '#': Pop(S, c);
+                break;
+            case '@': ClearStack(S);
+                break;
+            default: Push(S, ch);
+                break;
+            }
+            ch = getchar();
+        }
+        ClearStack(S);
+        if (ch != EOF)
+            ch =getchar();        
+    }
+    DestroyStack(S);
 }
