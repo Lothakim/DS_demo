@@ -120,8 +120,8 @@ void MergeList_L(LinkList La, LinkList Lb, LinkList Lc){
     free(Lb);               //释放Lb的头指针
 }
 
-//带头节点的双向链表的定义与基本操作
 
+//带头节点的双向链表的定义与基本操作
 typedef struct DulNode {
     ElemType data;
     struct DulNode *prior;
