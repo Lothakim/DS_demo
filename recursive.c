@@ -9,7 +9,7 @@ int fibonacci(int n);
 void hanoi(int n, char x, char y, char z);
 
 int main(){
-    hanoi(3, 'X', 'Y', 'Z');
+    hanoi(4, 'X', 'Y', 'Z');
 
     return 0;
 }
