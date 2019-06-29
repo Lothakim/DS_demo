@@ -79,7 +79,7 @@ Status DeQueue(LinkQueue Q, QElemType e){
     return OK;
 }
 
-//循环队列
+//循环队列的存储方式和实现
 #define MAXSIZE 100
 
 //循环队列中有一个元素弃置不用，即实际上队满时只有MAXSIZE-1个元素
