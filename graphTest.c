@@ -3,7 +3,7 @@
 
 int main()
 {
-    // create the graph given in above fugure
+    // create the graph given in above figure
     int V = 5;
     struct Graph* graph = createGraph(V);
     addEdge(graph, 0, 1);
