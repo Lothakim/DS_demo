@@ -54,7 +54,7 @@ void addEdge(struct Graph* graph, int src, int dest)
 {
     // Add an edge from src to dest.  A new node is
     // added to the adjacency list of src.  The node
-    // is added at the begining
+    // is added at the beginning
     struct AdjListNode *newNode = newAdjListNode(dest);
     newNode->next = graph->array[src].head;
     graph->array[src].head = newNode;
