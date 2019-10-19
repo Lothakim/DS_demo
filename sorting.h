@@ -137,12 +137,10 @@ void InsertSort(int L[], int length)
 /* 简单选择排序 */
 void SelectionSort(int L[], int length)
 {
-    int i, j, min;
-
-    for (i = 0; i < length-1; i++)
+    for (int i = 0; i < length-1; i++)
     {
-        min = i;
-        for (j = i+1; j < length; j++)
+        int min = i;
+        for (int j = i+1; j < length; j++)
         {
             if (L[j] < L[min])
                 min = j;
@@ -152,3 +150,31 @@ void SelectionSort(int L[], int length)
     }
 }
 
+
+/* 堆排序 */
+void HeapAdjust(int *L, int k, int len)
+{
+    int rc = L[k];
+    int i = (k==0)?1:(2*k);
+    for (; i < len ; i*=2)
+    {
+        if(i<len && L[i] < L[i + 1])
+            i++;
+        if(rc >= L[i])
+            break;
+
+        L[k]=L[i];
+        k=i;
+    }
+    L[k]=rc;
+}
+
+void HeapSort(int a[], int len)
+{
+    for (int i = (len-1)/2; i >= 0; i--)
+        HeapAdjust(a, i, len);
+    for(int i=len-1;i>=0;i--){
+        swap(&a[0], &a[i]);
+        HeapAdjust(a, 0, i - 1);
+    }
+}
