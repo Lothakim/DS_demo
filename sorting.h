@@ -45,6 +45,7 @@ int Partition(int L[], int low, int high)
     return low;
 }
 
+
 /* 归并排序 */
 void merge(int [], int, int, int);
 
@@ -126,9 +127,6 @@ void InsertSort(int L[], int length)
             {
                 swap(&L[j], &L[j-1]);
             }
-            /* 若后一个数小于前一个数，则交换；否则跳出内循环 */
-            else
-                break;
         }
     }
 }
@@ -152,29 +150,38 @@ void SelectionSort(int L[], int length)
 
 
 /* 堆排序 */
-void HeapAdjust(int *L, int k, int len)
-{
-    int rc = L[k];
-    int i = (k==0)?1:(2*k);
-    for (; i < len ; i*=2)
-    {
-        if(i<len && L[i] < L[i + 1])
-            i++;
-        if(rc >= L[i])
-            break;
-
-        L[k]=L[i];
-        k=i;
-    }
-    L[k]=rc;
-}
+void HeapAdjust(int [], int, int);
 
 void HeapSort(int a[], int len)
 {
+    //调整并建立初始大根堆
     for (int i = (len-1)/2; i >= 0; i--)
         HeapAdjust(a, i, len);
+
+    //首尾互换，调整子堆
     for(int i=len-1;i>=0;i--){
         swap(&a[0], &a[i]);
         HeapAdjust(a, 0, i - 1);
     }
+}
+
+void HeapAdjust(int L[], int k, int len)
+{
+    int rc = L[k];
+    int i = (k==0)?1:(2*k); //若k为根节点0，则取其左子节点1；否则取其左子节点2k
+    for (; i < len ; i*=2)
+    {
+        //找到k的孩子中较大的一个
+        if(i<len && L[i] < L[i + 1])
+            i++;
+
+        //若较大的孩子仍小于k，则无需进行调整
+        if(rc >= L[i])
+            break;
+
+        //否则将较大孩子的值赋值给k，并令k等于i，向下重复检测
+        L[k]=L[i];
+        k=i;
+    }
+    L[k]=rc;
 }
