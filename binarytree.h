@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
 
 //二叉树的链式存储结构
 typedef struct BitNode {
@@ -29,7 +29,7 @@ void enQueue(btree **, int *, btree *);
 
 btree *deQueue(btree **, int *);
 
-void btree_bfs_queue(btree *root) {
+void BFSViaQueue(btree *root) {
     int rear, front;
     btree **Q = initQueue(&front, &rear);
     btree *temp_node = root;
@@ -95,52 +95,156 @@ int height(btree *root) {
     if (root == NULL)
         return 0;
     else {
-        int lheight = height(root->left);
-        int rheight = height(root->right);
+        int l_height = height(root->left);
+        int r_height = height(root->right);
 
-        if (lheight > rheight)
-            return (lheight + 1);
-        else
-            return (rheight + 1);
+        return (l_height > r_height) ? l_height + 1 : r_height + 1;
     }
 }
 
 
-
-/* 递归方式实现二叉树遍历 */
-
+/* 递归方式实现二叉树深度优先搜索 */
 /* 前序遍历 */
-void printPreorder(btree *root) {
+void PreOrder(btree *root) {
     if (root == NULL)
         return;
 
     printf("%d ", root->data);
 
-    printPreorder(root->left);
+    PreOrder(root->left);
 
-    printPreorder(root->right);
+    PreOrder(root->right);
 }
 
 /* 中序遍历 */
-void printInorder(btree *root) {
+void InOrder(btree *root) {
     if (root == NULL)
         return;
 
-    printInorder(root->left);
+    InOrder(root->left);
 
     printf("%d ", root->data);
 
-    printInorder(root->right);
+    InOrder(root->right);
 }
 
 /* 后序遍历 */
-void printPostorder(btree *root) {
+void PostOrder(btree *root) {
     if (root == NULL)
         return;
 
-    printPostorder(root->left);
+    PostOrder(root->left);
 
-    printPostorder(root->right);
+    PostOrder(root->right);
 
     printf("%d ", root->data);
+}
+
+/*非递归遍历方法*/
+
+/*定义栈*/
+typedef struct StackNode {
+    btree *t;
+    struct StackNode *next;
+} stack;
+
+/*相关函数*/
+void push(stack **s, btree *t);
+
+btree *pop(stack **s);
+
+bool isEmpty(stack *s);
+
+void push(stack **s, btree *t) {
+    stack *new_StackNode = (stack *) malloc(sizeof(stack));
+
+    if (!new_StackNode) {
+        printf("Stack Overflow\n");
+        exit(0);
+    }
+
+    new_StackNode->t = t;
+    new_StackNode->next = *s;
+    *s = new_StackNode;
+}
+
+bool isEmpty(stack *s) {
+    return (s == NULL) ? 1 : 0;
+}
+
+btree *pop(stack **s) {
+    btree *res;
+    stack *top;
+
+    if (isEmpty(*s)) {
+        printf("Stack Underflow \n");
+        exit(0);
+    } else {
+        top = *s;
+        res = top->t;
+        *s = top->next;
+        free(top);
+        return res;
+    }
+}
+
+/*前序非递归遍历算法*/
+void PreOrder2(btree *root) {
+    if (root == NULL)
+        return;
+
+    btree *current = root;
+    stack *s = NULL;
+
+    push(&s, current);
+    while (!isEmpty(s)) {
+        current = pop(&s);
+        printf("%d ", current->data);
+
+        if (current->right)
+            push(&s, current->right);
+        if (current->left)
+            push(&s, current->left);
+    }
+}
+
+/*中序非递归遍历算法*/
+void InOrder2(btree *root) {
+    btree *current = root;
+    stack *s = NULL;
+
+    while (current || !isEmpty(s)) {
+        if (current) {
+            push(&s, current);
+            current = current->left;
+        } else {
+            current = pop(&s);
+            printf("%d ", current->data);
+            current = current->right;
+        }
+    }
+}
+
+/*后序非递归遍历算法*/
+void PostOrder2(btree *root) {
+    if (root == NULL)
+        return;
+
+    btree *current = root;
+    stack *s1 = NULL;
+    stack *s2 = NULL;
+
+    push(&s1, current);
+    while (!isEmpty(s1)) {
+        current = pop(&s1);
+        push(&s2, current);
+
+        if (current->left)
+            push(&s1, current->left);
+        if (current->right)
+            push(&s1, current->right);
+    }
+    while (!isEmpty(s2)) {
+        printf("%d ", pop(&s2)->data);
+    }
 }
