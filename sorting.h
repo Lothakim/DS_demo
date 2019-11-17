@@ -1,29 +1,30 @@
-/* 常见排序算法及其实现 */
+/* Sorting Algorithm */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-/* 辅助函数 */
+/* A utility function to exchange the value of two pointers*/
 void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
 
-/* 快速排序 */
+/* Quick Sort*/
 int Partition(int *, int, int);
 
 void QuickSort(int L[], int low, int high) {
     if (low < high) {
         int pivot = Partition(L, low, high);
-        /* 一趟排序，得到pivot并以此为界分割数列，然后分别递归调用 */
 
         QuickSort(L, low, pivot - 1);
         QuickSort(L, pivot + 1, high);
     }
 }
 
-/* 保证一次调用之后pivot左边的数均小于pivot右边的数 */
+/* Set the first element as the pivot,
+ * ensure all elements before pivot
+ * lesser than those after pivot*/
 int Partition(int L[], int low, int high) {
     int pivot = L[low];
 
@@ -42,7 +43,7 @@ int Partition(int L[], int low, int high) {
 }
 
 
-/* 归并排序 */
+/* Merge Sort */
 void merge(int [], int, int, int);
 
 void MergeSort(int L[], int start, int end) {
@@ -56,7 +57,7 @@ void MergeSort(int L[], int start, int end) {
     }
 }
 
-/* 将两个有序数列合并成一个有序数列 */
+/* Merge two sorted list into one */
 void merge(int L[], int start, int mid, int end) {
     int La[mid - start + 1];
     int Lb[end - mid];
@@ -87,12 +88,11 @@ void merge(int L[], int start, int mid, int end) {
 }
 
 
-/* 冒泡排序 */
+/* Bubble Sort*/
 void BubbleSort(int L[], int length) {
     int i, j;
 
     for (i = 0; i < length; ++i) {
-        /* 每趟排序之后，将最大的数移动到末尾 */
         for (j = i; j < length; ++j) {
             if (L[j] > L[j + 1]) {
                 swap(&L[j], &L[j + 1]);
@@ -102,7 +102,7 @@ void BubbleSort(int L[], int length) {
 }
 
 
-/* 插入排序 */
+/* Insert Sort */
 void InsertSort(int L[], int length) {
     int i, j;
 
@@ -116,7 +116,7 @@ void InsertSort(int L[], int length) {
 }
 
 
-/* 简单选择排序 */
+/* Selection Sort */
 void SelectionSort(int L[], int length) {
     for (int i = 0; i < length - 1; i++) {
         int min = i;
@@ -124,21 +124,21 @@ void SelectionSort(int L[], int length) {
             if (L[j] < L[min])
                 min = j;
         }
-        /* 找到最小的数，并放到已排序部分的尾部 */
         swap(&L[i], &L[min]);
     }
 }
 
 
-/* 堆排序 */
+/* Heap Sort */
 void HeapAdjust(int [], int, int);
 
 void HeapSort(int a[], int len) {
-    //调整并建立初始大根堆
+    /* Build initial heap */
     for (int i = len / 2 - 1; i >= 0; i--)
         HeapAdjust(a, i, len);
 
-    //首尾互换，调整子堆
+    /* Since the top of the heap is the maximum one, exchange it 
+    with the last one, then adjust remaining heap */
     for (int i = len - 1; i >= 0; i--) {
         swap(&a[0], &a[i]);
         HeapAdjust(a, 0, i);
@@ -149,15 +149,14 @@ void HeapAdjust(int L[], int k, int len) {
     int rc = L[k];
     int i = 2 * k + 1;
     for (; i < len; i = 2 * i + 1) {
-        //找到k的孩子中较大的一个
+        /* Find the bigger child of k */
         if (i < len - 1 && L[i] < L[i + 1])
             i++;
 
-        //若较大的孩子仍小于k，则无需进行调整
+        /* If the bigger one is less than k, then break */
         if (rc >= L[i])
             break;
 
-        //否则将较大孩子的值赋值给k，并令k等于i，向下重复检测
         L[k] = L[i];
         k = i;
     }

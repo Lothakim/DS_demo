@@ -1,5 +1,6 @@
-#include "binarytree.h"
 #include <stdio.h>
+#include "binarytree.h"
+#include "btreeRelatedProblem.h"
 
 int main()
 {
@@ -9,7 +10,8 @@ int main()
     root->left->left  = newNode(4);
     root->left->right = newNode(5);
 
-    PostOrder2(root);
+    swapSubtree(root);
+    BFSViaQueue(root);
 
     return 0;
 }

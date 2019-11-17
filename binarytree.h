@@ -1,18 +1,20 @@
-/*作者：罗通侯君*/
-/*二叉树的定义及基本操作*/
+/* Author: lothakim */
+/* Definition of binary tree and basic operation */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#define MAX_Q_SIZE 50
 
-/*二叉树的链式存储结构*/
+/* Definition of binary tree */
 typedef struct BitNode {
     int data;
     struct BitNode *left;
     struct BitNode *right;
 } btree;
 
-/*辅助函数，用于构造一个二叉树*/
+/* Helper function that allocates a new node with the 
+   given data and NULL left and right pointers. */
 btree *newNode(int data) {
     btree *node = (btree *) malloc(sizeof(btree));
 
@@ -24,21 +26,15 @@ btree *newNode(int data) {
 }
 
 /*--------------------------------------------------------*/
-/*辅助数据结构*/
+/*Helper data structure*/
 
-/*定义栈*/
+/* Definition of stack */
 typedef struct StackNode {
     btree *t;
     struct StackNode *next;
 } stack;
 
-/*栈的相关函数*/
-void push(stack **s, btree *t);
-
-btree *pop(stack **s);
-
-bool isEmpty(stack *s);
-
+/* Basic operation of stack */
 void push(stack **s, btree *t) {
     stack *new_StackNode = (stack *) malloc(sizeof(stack));
 
@@ -72,15 +68,9 @@ btree *pop(stack **s) {
     }
 }
 
-/* 队列的定义及相关函数 */
-btree **initQueue(int *, int *);
-
-void enQueue(btree **, int *, btree *);
-
-btree *deQueue(btree **, int *);
-
+/* Queue and basic operation */
 btree **initQueue(int *front, int *rear) {
-    btree **Q = (btree **) malloc(sizeof(btree) * 500);
+    btree **Q = (btree **) malloc(sizeof(btree) * MAX_Q_SIZE);
     *front = *rear = 0;
 
     return Q;
@@ -99,9 +89,8 @@ btree *deQueue(btree **Q, int *front) {
 
 
 /*--------------------------------------------------------*/
-/*层序遍历的实现*/
+/*Breadth first search with queue */
 
-/*借助队列实现层序遍历*/
 void BFSViaQueue(btree *root) {
     int rear, front;
     btree **Q = initQueue(&front, &rear);
@@ -119,50 +108,12 @@ void BFSViaQueue(btree *root) {
         temp_node = deQueue(Q, &front);
     }
 }
-
-/* 用递归的方式实现层序遍历 */
-int height(btree *root);
-
-void printGivenLevel(btree *root, int level);
-
-void BFSRecur(btree *root) {
-    int h = height(root);
-    int i;
-
-    for (i = 1; i <= h; i++)
-        printGivenLevel(root, i);
-}
-
-void printGivenLevel(btree *root, int level) {
-    if (root == NULL)
-        return;
-
-    if (level == 1)
-        printf("%d ", root->data);
-
-    else if (level > 1) {
-        printGivenLevel(root->left, level - 1);
-        printGivenLevel(root->right, level - 1);
-    }
-}
-
-int height(btree *root) {
-    if (root == NULL)
-        return 0;
-    else {
-        int lh = height(root->left);
-        int rh = height(root->right);
-
-        return (lh > rh) ? lh + 1 : rh + 1;
-    }
-}
 /*--------------------------------------------------------*/
 
 
 /*--------------------------------------------------------*/
-/* 递归方式实现二叉树深度优先搜索 */
+/* Depth first search recursive */
 
-/* 前序遍历 */
 void PreOrder(btree *root) {
     if (root == NULL)
         return;
@@ -174,7 +125,6 @@ void PreOrder(btree *root) {
     PreOrder(root->right);
 }
 
-/* 中序遍历 */
 void InOrder(btree *root) {
     if (root == NULL)
         return;
@@ -186,7 +136,6 @@ void InOrder(btree *root) {
     InOrder(root->right);
 }
 
-/* 后序遍历 */
 void PostOrder(btree *root) {
     if (root == NULL)
         return;
@@ -201,9 +150,8 @@ void PostOrder(btree *root) {
 
 
 /*--------------------------------------------------------*/
-/*借助栈实现非递归深度优先搜索*/
+/*Depth first search non-recursive with stack*/
 
-/*前序非递归遍历算法*/
 void PreOrder2(btree *root) {
     if (root == NULL)
         return;
@@ -223,7 +171,6 @@ void PreOrder2(btree *root) {
     }
 }
 
-/*中序非递归遍历算法*/
 void InOrder2(btree *root) {
     btree *current = root;
     stack *s = NULL;
@@ -240,7 +187,6 @@ void InOrder2(btree *root) {
     }
 }
 
-/*后序非递归遍历算法*/
 void PostOrder2(btree *root) {
     if (root == NULL)
         return;
