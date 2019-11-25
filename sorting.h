@@ -10,7 +10,7 @@ void swap(int *a, int *b) {
     *b = temp;
 }
 
-/* Quick Sort*/
+/* Quick Sort */
 int Partition(int *, int, int);
 
 void QuickSort(int L[], int low, int high) {
@@ -24,7 +24,7 @@ void QuickSort(int L[], int low, int high) {
 
 /* Set the first element as the pivot,
  * ensure all elements before pivot
- * lesser than those after pivot*/
+ * lesser than those after pivot */
 int Partition(int L[], int low, int high) {
     int pivot = L[low];
 

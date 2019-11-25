@@ -1,4 +1,4 @@
-/* Author: lothakim */
+/* Author: Lot hakim */
 /* Definition of binary tree and basic operation */
 
 #include <stdio.h>
@@ -26,7 +26,7 @@ btree *newNode(int data) {
 }
 
 /*--------------------------------------------------------*/
-/*Helper data structure*/
+/* Helper data structure */
 
 /* Definition of stack */
 typedef struct StackNode {
@@ -89,7 +89,7 @@ btree *deQueue(btree **Q, int *front) {
 
 
 /*--------------------------------------------------------*/
-/*Breadth first search with queue */
+/* Breadth first search with queue */
 
 void BFSViaQueue(btree *root) {
     int rear, front;
