@@ -1,5 +1,3 @@
-/*--------------------------------------------------------*/
-
 /* Breadth first search recursive approach */
 int height(btree *root);
 
@@ -13,6 +11,7 @@ void BFSRecursive(btree *root) {
         printGivenLevel(root, i);
 }
 
+/* Print all nodes in the given level */
 void printGivenLevel(btree *root, int level) {
     if (root == NULL)
         return;
@@ -26,6 +25,7 @@ void printGivenLevel(btree *root, int level) {
     }
 }
 
+/* Calculate the height of the tree */
 int height(btree *root) {
     if (root == NULL)
         return 0;
@@ -36,10 +36,9 @@ int height(btree *root) {
         return (lh > rh) ? lh + 1 : rh + 1;
     }
 }
-/*--------------------------------------------------------*/
 
 
-/*--------------------------------------------------------*/
+
 /*Find the maximum length between the leaf node
  * of left subtree and right subtree*/
 
@@ -50,10 +49,9 @@ int height(btree *root) {
 int maxDistance(btree *root){
     return height(root->left)+height(root->right);
 }
-/*--------------------------------------------------------*/
 
 
-/*--------------------------------------------------------*/
+
 /* Switch the left and right subtree of a binary tree */
 
 /* Recursive approach */
@@ -75,3 +73,10 @@ void swapSubtree(btree *root){
 void swapSubtree2(btree *root){
 
 }
+
+
+
+/* Count the number of leaf in a binary tree */
+
+
+
