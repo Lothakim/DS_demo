@@ -56,8 +56,7 @@ int maxDistance(btree *root){
 
 /* Recursive approach */
 void swapSubtree(btree *root){
-    btree *tempNode;
-
+    btree *tempNode
     if(!root->left && !root->right)
         return;
 
@@ -76,7 +75,7 @@ void swapSubtree2(btree *root){
 
 
 
-/* Count the number of leaf in a binary tree */
+/* Count the number of leaves in a binary tree */
 
 
 
